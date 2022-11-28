@@ -10,9 +10,10 @@ Very basic and rough python scripts that I've needed either for personal use or 
 Checks for google ad's in google search to see how many times "seller" appears as seller
 Requires
 ```
-  Test
-  
+  pip install requests
+  pip install BeautifulSoup4
 ```
+Pip install as you wish either virtual or not.
 
 ## Authors
 
