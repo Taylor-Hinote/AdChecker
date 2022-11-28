@@ -4,15 +4,28 @@ from bs4 import BeautifulSoup
 
 # if command line arguments are not provided then exit
 if len(sys.argv) < 2:
+    for x in range(5):
+        print()
+    print('Usage: python AdChecker.py <url> <seller> <trials>') 
     print("Please provide the URL as command line argument")
+    print("Example: python AdChecker.py https://www.google.com/search?q=marble+fountain ''Fine's Gallery'' 10")
+    for x in range(5):
+        print()
     sys.exit()
 # Get the URL from the command line
 url = sys.argv[1]
 # Get Seller ID from the command line
+sellerID = sys.argv[2]
+
+# get pageRequest from command line
+pageRequests = sys.argv[3]
+
+# Get int from command line and convert to int
+pageRequests = int(pageRequests)
 
 headers = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36" }
 percentage = 0
-pageRequests = 10
+# pageRequests = 10
 for x in range(5):
     print()
 
@@ -20,9 +33,7 @@ for x in range(pageRequests):
     print("Fetching page: ", x+1)
 
     page = requests.get(url, headers=headers)
-    # if page doen't exist/load properly then go to next loop iteration
-    if page.status_code != 200:
-        continue
+
 
     soup = BeautifulSoup(page.content, "html.parser")
 
@@ -33,7 +44,7 @@ for x in range(pageRequests):
     for card in cards:
         totalCards += 1
     for seller in sellers:
-        if(seller.text == "Fine's Gallery"):
+        if(seller.text == sellerID):
             totalSeller += 1
     
     print ("Total Cards: ", totalCards)
@@ -45,6 +56,6 @@ for x in range(pageRequests):
 
 totalPercentage = percentage / pageRequests
 
-print(f"Fine's gallery is selling on average {totalPercentage}% of the items on this page tested {pageRequests} times.")
+print(f"{sellerID} is selling on average {totalPercentage}% of the items on this page tested {pageRequests} times.")
 for x in range(5):
     print()
