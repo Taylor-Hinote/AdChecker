@@ -28,7 +28,7 @@ percentage = 0
 
 for x in range(5):
     print()
-
+print("Checking for ads from " + sellerID + " on " + url)
 for x in range(pageRequests):
     print("Fetching page: ", x+1)
 
