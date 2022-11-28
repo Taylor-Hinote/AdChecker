@@ -56,6 +56,6 @@ for x in range(pageRequests):
 
 totalPercentage = percentage / pageRequests
 
-print(f"{sellerID} is selling on average {totalPercentage}% of the items on this page tested {pageRequests} times.")
-for x in range(5):
+print(f"{sellerID} is selling on average {totalPercentage}% of the items on \n {url} tested {pageRequests} times.")
+for x in range(2):
     print()
