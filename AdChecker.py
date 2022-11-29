@@ -30,7 +30,12 @@ percentage = 0
 params = url.replace("https://www.google.com/search?q=", "")
 params = params.replace("+", "_")
 
-directory = "Output_" + params.title()
+# get date and time
+from datetime import datetime
+now = datetime.now()
+dt_string = now.strftime("%m_%d_%Y")
+
+directory = "Output_" + params.title() + "_" + dt_string
 os.makedirs(directory+'\ScreenShots', exist_ok=True)
 
 f = open(directory+"\Page Request.html", "w", encoding="utf-8")
