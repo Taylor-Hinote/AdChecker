@@ -1,7 +1,7 @@
 
-# Python Projects
+# Python Google Ad Checker
 
-Very basic and rough python scripts that I've needed either for personal use or work.
+Very basic and rough python script that I needed for work.
 
 
 
