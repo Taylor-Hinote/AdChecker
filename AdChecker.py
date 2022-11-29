@@ -35,10 +35,12 @@ from datetime import datetime
 now = datetime.now()
 dt_string = now.strftime("%m_%d_%Y")
 
-directory = "Output_" + params.title() + "_" + dt_string
-os.makedirs(directory+'\ScreenShots', exist_ok=True)
+directory = "Output_" + dt_string
+subDirectory = params.title()
+directoryFinal = directory + "/" + subDirectory
+os.makedirs(directoryFinal+'\ScreenShots', exist_ok=True)
 
-f = open(directory+"\Page Request.html", "w", encoding="utf-8")
+f = open(directoryFinal+"\Page Request.html", "w", encoding="utf-8")
 
 f.write('<div style="text-align: center;"><h1>Page Requests</h1><p>Results for <strong>'+ url +'</strong> ran <strong>' + str(pageRequests) +'</strong> times</p></div>')
 
@@ -52,7 +54,7 @@ for x in range(pageRequests):
 
     soup = BeautifulSoup(page.content, "html.parser")
 
-    s = open(directory + "\ScreenShots\ScreenShot"+ str(x+1) +".html", "w", encoding="utf-8")
+    s = open(directoryFinal + "\ScreenShots\ScreenShot"+ str(x+1) +".html", "w", encoding="utf-8")
     s.write(soup.prettify())
     s.close()
 
@@ -89,7 +91,7 @@ totalPercentage = percentage / pageRequests
 print(f"{sellerID} is selling on average {round(totalPercentage, 2)}% of the items on \n {url} tested {pageRequests} times.")
 for x in range(2):
     print()
-print("Results have been saved to "+directory+"\Page Request.html")
+print("Results have been saved to "+directoryFinal+"\Page Request.html")
 for x in range(2):
     print()
     
