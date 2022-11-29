@@ -1,5 +1,6 @@
 import requests
 import sys
+import os
 from bs4 import BeautifulSoup
 
 # if command line arguments are not provided then exit
@@ -26,6 +27,14 @@ pageRequests = int(pageRequests)
 headers = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36" }
 percentage = 0
 
+# Make directory labeled Test
+os.makedirs('Output', exist_ok=True)
+os.makedirs('Output\ScreenShots', exist_ok=True)
+
+f = open("Output\Page Request.html", "w", encoding="utf-8")
+
+f.write('<div style="text-align: center;"><h1>Page Requests</h1><p>Results for <strong>'+ url +'</strong> ran <strong>' + str(pageRequests) +'</strong> times</p></div>')
+
 for x in range(5):
     print()
 print("Checking for ads from " + sellerID + " on " + url)
@@ -34,11 +43,15 @@ for x in range(pageRequests):
 
     page = requests.get(url, headers=headers)
 
-
     soup = BeautifulSoup(page.content, "html.parser")
+
+    s = open("Output\ScreenShots\ScreenShot"+ str(x+1) +".html", "w", encoding="utf-8")
+    s.write(soup.prettify())
+    s.close()
 
     cards = soup.find_all("div", class_="mnr-c")
     sellers = soup.find_all("span", class_="zPEcBd VZqTOd")
+    caroseul = soup.find("div", class_="bC8sde BNizGe")
     totalCards = 0
     totalSeller = 0
     for card in cards:
@@ -47,15 +60,37 @@ for x in range(pageRequests):
         if(seller.text == sellerID):
             totalSeller += 1
     
-    print ("Total Cards: ", totalCards)
-    print ("Total Seller: ", totalSeller)
+    f.write("<h1>Page: " + str(x+1) + "</h1>")
+    print ("Total Ad's: ", totalCards)
+    f.write("Total Ad's: " + str(totalCards))
+    f.write("<br>")
+    print (sellerID +" appears: ", totalSeller)
+    f.write(sellerID +" appears: " + str(totalSeller))
+    f.write("<br>")
     print ("Percentage: ", (totalSeller/totalCards)*100)
+    f.write("Percentage: " + str((totalSeller/totalCards)*100))
+    f.write("<h3>Page Preview</h3>")
+    f.write('<iframe style="border-radius: .25em; border:1px solid black; 	box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ;-webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; -moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; "src="./ScreenShots/ScreenShot'+ str(x+1) +'.html" width=1200px height=300px></iframe>')
+    f.write("<br>")
+    f.write("<br>")
     print()
     print()
     percentage = percentage + (totalSeller/totalCards)*100
 
 totalPercentage = percentage / pageRequests
 
-print(f"{sellerID} is selling on average {totalPercentage}% of the items on \n {url} tested {pageRequests} times.")
+print(f"{sellerID} is selling on average {round(totalPercentage, 2)}% of the items on \n {url} tested {pageRequests} times.")
 for x in range(2):
     print()
+print("Results have been saved to Output\Page Request.html")
+for x in range(2):
+    print()
+    
+f.write('<div style="text-align: center;">')
+f.write("<h1>Summary</h1>")
+f.write(f"<p><strong>{sellerID}</strong> is selling on average <strong>{round(totalPercentage, 2)}%</strong> of the items on \n <strong>{url}</strong> tested <strong>{pageRequests}</strong> times.</p>")
+f.write("<br>")
+f.write("</div>")
+
+
+f.close()
