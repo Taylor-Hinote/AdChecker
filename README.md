@@ -1,5 +1,5 @@
 
-# Python Google Ad Checker
+# Python Google Search Ad Checker
 
 Very basic and rough python script that I needed for work.
 
