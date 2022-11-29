@@ -27,11 +27,13 @@ pageRequests = int(pageRequests)
 headers = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36" }
 percentage = 0
 
-# Make directory labeled Test
-os.makedirs('Output', exist_ok=True)
-os.makedirs('Output\ScreenShots', exist_ok=True)
+params = url.replace("https://www.google.com/search?q=", "")
+params = params.replace("+", "_")
 
-f = open("Output\Page Request.html", "w", encoding="utf-8")
+directory = "Output_" + params.title()
+os.makedirs(directory+'\ScreenShots', exist_ok=True)
+
+f = open(directory+"\Page Request.html", "w", encoding="utf-8")
 
 f.write('<div style="text-align: center;"><h1>Page Requests</h1><p>Results for <strong>'+ url +'</strong> ran <strong>' + str(pageRequests) +'</strong> times</p></div>')
 
@@ -45,7 +47,7 @@ for x in range(pageRequests):
 
     soup = BeautifulSoup(page.content, "html.parser")
 
-    s = open("Output\ScreenShots\ScreenShot"+ str(x+1) +".html", "w", encoding="utf-8")
+    s = open(directory + "\ScreenShots\ScreenShot"+ str(x+1) +".html", "w", encoding="utf-8")
     s.write(soup.prettify())
     s.close()
 
@@ -82,7 +84,7 @@ totalPercentage = percentage / pageRequests
 print(f"{sellerID} is selling on average {round(totalPercentage, 2)}% of the items on \n {url} tested {pageRequests} times.")
 for x in range(2):
     print()
-print("Results have been saved to Output\Page Request.html")
+print("Results have been saved to "+directory+"\Page Request.html")
 for x in range(2):
     print()
     
