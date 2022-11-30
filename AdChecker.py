@@ -60,6 +60,7 @@ for x in range(pageRequests):
 
     cards = soup.find_all("div", class_="mnr-c")
     sellers = soup.find_all("span", class_="zPEcBd VZqTOd")
+    sellers2 = soup.find_all("span", class_="rhsg3")
     caroseul = soup.find("div", class_="bC8sde BNizGe")
     totalCards = 0
     totalSeller = 0
@@ -68,6 +69,10 @@ for x in range(pageRequests):
     for seller in sellers:
         if(seller.text == sellerID):
             totalSeller += 1
+    for seller in sellers2:
+        if(seller.text == sellerID):
+            totalSeller += 1
+            
     
     f.write("<h1>Page: " + str(x+1) + "</h1>")
     print ("Total Ad's: ", totalCards)
