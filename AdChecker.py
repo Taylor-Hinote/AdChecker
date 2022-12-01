@@ -87,7 +87,7 @@ for x in range(pageRequests):
     print ("Percentage: ", (totalSeller/totalCards)*100)
     f.write("Percentage: " + str((totalSeller/totalCards)*100))
     f.write("<h3>Page Preview</h3>")
-    f.write('<iframe style="border-radius: .25em; border:1px solid black; 	box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ;-webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; -moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; "src="./ScreenShots/ScreenShot'+ str(x+1) +'.html" width=1200px height=300px></iframe>')
+    f.write('<iframe style="resize: both; border-radius: .25em; border:1px solid black; 	box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ;-webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; -moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; "src="./ScreenShots/ScreenShot'+ str(x+1) +'.html" width=1200px height=300px></iframe>')
     f.write("<br>")
     f.write("<br>")
     print()
