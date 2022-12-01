@@ -39,10 +39,13 @@ directory = "Output_" + dt_string
 subDirectory = params.title()
 directoryFinal = directory + "/" + subDirectory
 os.makedirs(directoryFinal+'\ScreenShots', exist_ok=True)
+fileName = directoryFinal+"\Page Request.html"
 
-f = open(directoryFinal+"\Page Request.html", "w", encoding="utf-8")
+f = open(fileName, "w", encoding="utf-8")
+f.write("<html><head><title>Page Request</title></head><body>")
 
-f.write('<div style="text-align: center;"><h1>Page Requests</h1><p>Results for <strong>'+ url +'</strong> ran <strong>' + str(pageRequests) +'</strong> times</p></div>')
+f.write('<div style="text-align: center;"><h1>Page Requests</h1><p>Results for <strong><a href="'+url+'" target="_blank">'+ url +'</a></strong> ran <strong>' + str(pageRequests) +'</strong> times</p></div>')
+f.write('<div style="text-align: center;"<strong><a href="#bottom">Bottom of Page </a></strong></div>')
 
 for x in range(5):
     print()
@@ -102,9 +105,12 @@ for x in range(2):
     
 f.write('<div style="text-align: center;">')
 f.write("<h1>Summary</h1>")
+f.write("<a id='bottom'></a>")
 f.write(f"<p><strong>{sellerID}</strong> is selling on average <strong>{round(totalPercentage, 2)}%</strong> of the items on \n <strong>{url}</strong> tested <strong>{pageRequests}</strong> times.</p>")
 f.write("<br>")
 f.write("</div>")
 
 
 f.close()
+
+os.startfile(fileName, 'open')
