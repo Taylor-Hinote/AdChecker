@@ -14,6 +14,8 @@ python AdChecker.py https://www.google.com/search?q=bronze-fountain "Fine's Gall
 python AdChecker.py https://www.google.com/search?q=bronze+statues "Fine's Gallery" 10
 
 python AdChecker.py https://www.google.com/search?q=religious+statues "Fine's Gallery" 10
+
+python AdChecker.py https://www.google.com/search?q=bronze+dolphin "Fine's Gallery" 10
 echo -----------------
 echo AdChecker Complete
 pause
