@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 if len(sys.argv) < 2:
     for x in range(5):
         print()
-    print('Usage: python AdChecker.py <url> <seller> <trials> <chart(true,false)>')
+    print('Usage: python AdChecker.py <url> <seller> <trials> <openHTML(true,false)>')
     print("Please provide the URL as command line argument")
     print("Example: python AdChecker.py https://www.google.com/search?q=marble+fountain ''Fine's Gallery'' 10")
     for x in range(5):
@@ -23,9 +23,12 @@ pageRequests = sys.argv[3]
 
 # if chartBool is set then get the parameter from the command line
 if len(sys.argv) > 4:
-    chartBool = sys.argv[4]
+    htmlBool = sys.argv[4]
 else:
-    chartBool = False
+    htmlBool = False
+
+
+
 
 # Get int from command line and convert to int
 pageRequests = int(pageRequests)
@@ -128,7 +131,7 @@ for x in range(pageRequests):
         print()
         print()
         continue
-    
+
 
 totalPercentage = percentage / pageRequests
 
@@ -148,6 +151,7 @@ f.write("</div>")
 
 f.close()
 
-os.startfile(fileName, 'open')
+if(htmlBool == 'true'):
+    os.startfile(fileName, 'open')
 
 
