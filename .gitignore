@@ -1,3 +1,4 @@
 /Output*
 /ExampleOutput
 runAdChecker.bat
+/__pycache__*
