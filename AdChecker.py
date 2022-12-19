@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 if len(sys.argv) < 2:
     for x in range(5):
         print()
-    print('Usage: python AdChecker.py <url> <seller> <trials>') 
+    print('Usage: python AdChecker.py <url> <seller> <trials> <chart(true,false)>')
     print("Please provide the URL as command line argument")
     print("Example: python AdChecker.py https://www.google.com/search?q=marble+fountain ''Fine's Gallery'' 10")
     for x in range(5):
@@ -20,6 +20,12 @@ sellerID = sys.argv[2]
 
 # get pageRequest from command line
 pageRequests = sys.argv[3]
+
+# if chartBool is set then get the parameter from the command line
+if len(sys.argv) > 4:
+    chartBool = sys.argv[4]
+else:
+    chartBool = False
 
 # Get int from command line and convert to int
 pageRequests = int(pageRequests)
@@ -35,7 +41,13 @@ from datetime import datetime
 now = datetime.now()
 dt_string = now.strftime("%m_%d_%Y")
 
-directory = "Output_" + dt_string
+def getDirectory():
+    directory = "Output_" + dt_string
+    return directory
+
+
+# directory = "Output_" + dt_string
+directory = getDirectory()
 subDirectory = params.title()
 directoryFinal = directory + "/" + subDirectory
 os.makedirs(directoryFinal+'\ScreenShots', exist_ok=True)
@@ -50,49 +62,73 @@ f.write('<div style="text-align: center;"<strong><a href="#bottom">Bottom of Pag
 for x in range(5):
     print()
 print("Checking for ads from " + sellerID + " on " + url)
+
+# init an array to store results for chart
+chartArray = []
+
+# init a csv file to store results for chart if a file does not already exist
+import csv
+if not os.path.exists(directory + '\chartData.csv'):
+    with open(directory + '\chartData.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+
+
 for x in range(pageRequests):
-    print("Fetching page: ", x+1)
+    # if error occurs then go continue to next page
+    try:
+        print("Fetching page: ", x+1)
 
-    page = requests.get(url, headers=headers)
+        page = requests.get(url, headers=headers)
 
-    soup = BeautifulSoup(page.content, "html.parser")
+        soup = BeautifulSoup(page.content, "html.parser")
 
-    s = open(directoryFinal + "\ScreenShots\ScreenShot"+ str(x+1) +".html", "w", encoding="utf-8")
-    s.write(soup.prettify())
-    s.close()
+        s = open(directoryFinal + "\ScreenShots\ScreenShot"+ str(x+1) +".html", "w", encoding="utf-8")
+        s.write(soup.prettify())
+        s.close()
 
-    cards = soup.find_all("div", class_="mnr-c")
-    sellers = soup.find_all("span", class_="zPEcBd VZqTOd")
-    sellers2 = soup.find_all("span", class_="rhsg3")
-    caroseul = soup.find("div", class_="bC8sde BNizGe")
-    totalCards = 0
-    totalSeller = 0
-    for card in cards:
-        totalCards += 1
-    for seller in sellers:
-        if(seller.text == sellerID):
-            totalSeller += 1
-    for seller in sellers2:
-        if(seller.text == sellerID):
-            totalSeller += 1
-            
+        cards = soup.find_all("div", class_="mnr-c")
+        sellers = soup.find_all("span", class_="zPEcBd VZqTOd")
+        sellers2 = soup.find_all("span", class_="rhsg3")
+        caroseul = soup.find("div", class_="bC8sde BNizGe")
+        totalCards = 0
+        totalSeller = 0
+        for card in cards:
+            totalCards += 1
+        for seller in sellers:
+            if(seller.text == sellerID):
+                totalSeller += 1
+        for seller in sellers2:
+            if(seller.text == sellerID):
+                totalSeller += 1
+                
+        
+        f.write("<h1>Page: " + str(x+1) + "</h1>")
+        print ("Total Ad's: ", totalCards)
+        f.write("Total Ad's: " + str(totalCards))
+        f.write("<br>")
+        print (sellerID +" appears: ", totalSeller)
+        f.write(sellerID +" appears: " + str(totalSeller))
+        f.write("<br>")
+        print ("Percentage: ", (totalSeller/totalCards)*100)
+        f.write("Percentage: " + str((totalSeller/totalCards)*100))
+        f.write("<h3>Page Preview</h3>")
+        f.write('<iframe style="resize: both; border-radius: .25em; border:1px solid black; 	box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ;-webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; -moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; "src="./ScreenShots/ScreenShot'+ str(x+1) +'.html" width=1200px height=300px></iframe>')
+        f.write("<br>")
+        f.write("<br>")
+        print()
+        print()
+        percentage = percentage + (totalSeller/totalCards)*100
+        chartArray.append((totalSeller/totalCards)*100)
+        with open(directory + '\chartData.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([params, round((totalSeller/totalCards)*100)])
+    except:
+        print("Error occured on page: ", x+1)
+        print("Continuing to next page...")
+        print()
+        print()
+        continue
     
-    f.write("<h1>Page: " + str(x+1) + "</h1>")
-    print ("Total Ad's: ", totalCards)
-    f.write("Total Ad's: " + str(totalCards))
-    f.write("<br>")
-    print (sellerID +" appears: ", totalSeller)
-    f.write(sellerID +" appears: " + str(totalSeller))
-    f.write("<br>")
-    print ("Percentage: ", (totalSeller/totalCards)*100)
-    f.write("Percentage: " + str((totalSeller/totalCards)*100))
-    f.write("<h3>Page Preview</h3>")
-    f.write('<iframe style="resize: both; border-radius: .25em; border:1px solid black; 	box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ;-webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; -moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5)  ; "src="./ScreenShots/ScreenShot'+ str(x+1) +'.html" width=1200px height=300px></iframe>')
-    f.write("<br>")
-    f.write("<br>")
-    print()
-    print()
-    percentage = percentage + (totalSeller/totalCards)*100
 
 totalPercentage = percentage / pageRequests
 
@@ -110,7 +146,8 @@ f.write(f"<p><strong>{sellerID}</strong> is selling on average <strong>{round(to
 f.write("<br>")
 f.write("</div>")
 
-
 f.close()
 
 os.startfile(fileName, 'open')
+
+
