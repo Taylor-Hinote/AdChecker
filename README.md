@@ -9,7 +9,7 @@ Checks for google ad's in google search to see how many times "seller" appears a
 Requires
 
 ```text
-  pip install BeautifulSoup4
+  pip install BeautifulSoup4 Requests matplotlib
 ```
 
 Pip install as you wish either virtual or not.
