@@ -3,3 +3,4 @@
 runAdChecker.bat
 /__pycache__*
 /OLD*
+/lib/__pycache__
