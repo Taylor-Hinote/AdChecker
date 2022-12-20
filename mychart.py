@@ -1,6 +1,7 @@
 import csv
 import matplotlib.pyplot as plt
 import os
+import numpy as np
 # get date and time
 from datetime import datetime
 now = datetime.now()

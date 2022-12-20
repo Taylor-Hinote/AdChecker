@@ -53,7 +53,8 @@ def CheckAds(sellerID, pageRequests, htmlBool, pageName, pageURL, multiThread):
     for x in range(pageRequests):
         # if error occurs then go continue to next page
         try:
-            print("Fetching page "+ pageName +": ", x+1)
+            print(" "* 100, end="\r")
+            print("Fetching page "+ pageName +": ", x+1 , end="\r")
 
             page = requests.get(pageURL, headers=headers)
 
