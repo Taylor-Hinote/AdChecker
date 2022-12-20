@@ -25,6 +25,10 @@ Or use included .bat file
 Add all the pages you want checked in the pages.json file
 Make sure to edit config.ini
 
+## Example
+
+[Example](Example.pdf)
+
 ## Authors
 
 - [Taylor Hinote](https://github.com/Taylor-Hinote/)

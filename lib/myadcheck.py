@@ -21,7 +21,7 @@ def CheckAds(sellerID, pageRequests, htmlBool, pageName, pageURL, multiThread):
     dt_string = now.strftime("%m_%d_%Y")
 
     def getDirectory():
-        directory = "Output_" + dt_string
+        directory = "./Output_" + dt_string
         return directory
 
 

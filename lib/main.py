@@ -7,7 +7,7 @@ from myadcheck import *
 from mychart import *
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('./config/config.ini')
 sellerID = config['General']['SellerName']
 pageRequests = config['General']['FetchCount']
 htmlBool = config['General']['DisplayHTML']
@@ -15,7 +15,7 @@ displayChart = config['General']['DisplayChart']
 multiThread = config['General']['MultiThread'] 
 
 if multiThread == "True":
-    with open('pages.json') as json_file:
+    with open('./config/pages.json') as json_file:
         data = json.load(json_file)
         threads = []
         for p in data:
@@ -29,7 +29,7 @@ if multiThread == "True":
         for t in threads:
             t.join()
 else:
-    with open('pages.json') as json_file:
+    with open('./config/pages.json') as json_file:
         data = json.load(json_file)
         for p in data:
             pageName = p

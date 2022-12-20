@@ -3,7 +3,7 @@
 echo Starting AdChecker
 echo -----------------
 
-python main.py
+python ./lib/main.py
 
 echo -----------------
 echo AdChecker Complete

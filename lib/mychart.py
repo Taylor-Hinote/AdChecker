@@ -8,8 +8,10 @@ now = datetime.now()
 dt_string = now.strftime("%m_%d_%Y")
 
 def getDirectory():
-    directory = "Output_" + dt_string
+    directory = "./Output_" + dt_string
     return directory
+
+directory = getDirectory()
 
 def generateChart(displayChart):
 
@@ -63,6 +65,8 @@ def generateChart(displayChart):
 
     if displayChart == "True":
         os.startfile(directory+"\chart.png")
+
+    os.remove(directory + "\chartData.csv")
 
 
 
