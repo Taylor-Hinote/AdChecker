@@ -17,7 +17,7 @@ Pip install as you wish either virtual or not.
 ## Usage
 
 ```python
-  py main.py
+  py ./lib/main.py
 ```
 
 Or use included .bat file
