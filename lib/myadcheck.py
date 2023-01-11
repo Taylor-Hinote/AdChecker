@@ -63,7 +63,7 @@ def CheckAds(sellerID, pageRequests, htmlBool, pageName, pageURL, multiThread):
             s = open(directoryFinal + "\ScreenShots\ScreenShot"+ str(x+1) +".html", "w", encoding="utf-8")
             s.write(soup.prettify())
             s.close()
-
+            
             cards = soup.find_all("div", class_="mnr-c")
             sellers = soup.find_all("span", class_="zPEcBd VZqTOd")
             sellers2 = soup.find_all("span", class_="rhsg3")
@@ -72,6 +72,69 @@ def CheckAds(sellerID, pageRequests, htmlBool, pageName, pageURL, multiThread):
             totalSeller = 0
             for card in cards:
                 totalCards += 1
+            
+            if sellerID == "*":
+                allSellers = []
+                try:
+                    for seller in sellers:
+                        allSellers.append(seller.text)
+                except:
+                    print("Error occured on adding sellers")
+                    continue
+                try:
+                    for seller in sellers2:
+                        allSellers.append(seller.text)
+                except:
+                    print("Error occured on adding sellers")
+                    continue
+                try:
+                    if not os.path.exists(directory+'\sellerData.csv'):
+                        with open(directory+'\sellerData.csv', 'w', newline='') as file:
+                            writer = csv.writer(file)
+                            writer.writerow(["Seller Name", "Total Ads", "Percentage", "Search Query", "Request Number"])
+                except:
+                    print("Error occured on creating csv file")
+                    
+                try:
+                    
+                    for seller in allSellers:
+                        totalSeller = allSellers.count(seller)
+                        
+                        percentage = round((totalSeller/totalCards)*100)
+                                           
+                        rowData = [seller, totalSeller, "~" + str(percentage) +"%", params, x+1]
+                         
+                        # if rowData not in pandas.read_csv(file).values:
+                              
+                        with open(directory + '\sellerData.csv', 'a', newline='') as file:
+                            writer = csv.writer(file)                            
+                            writer.writerow(rowData)
+                            print("Printing row") 
+
+                            
+                except:
+                    print("Error occured on counting sellers")
+                    continue
+                
+                f.write("<h1>Wrong Config Settings Data Saved in CSV</h1>")
+                f.close()
+                
+                # open csv file and read data if any duplicates exist then remove them
+                import pandas
+                try:
+                    print("Sanitizing File")
+                    df = pandas.read_csv(directory + '\sellerData.csv')
+                    df = df.drop_duplicates()
+                    df.to_csv(directory + '\sellerData.csv', index=False)
+                except:
+                    print("Error occured on removing duplicates")
+                continue
+                
+                exit
+                    
+                
+            
+            
             for seller in sellers:
                 if(seller.text == sellerID):
                     totalSeller += 1
@@ -109,22 +172,26 @@ def CheckAds(sellerID, pageRequests, htmlBool, pageName, pageURL, multiThread):
                 print()
             continue
 
+    try:
+        
+        totalPercentage = percentage / pageRequests
+        f.write('<div style="text-align: center;">')
+        f.write("<h1>Summary</h1>")
+        f.write("<a id='bottom'></a>")
+        f.write(f"<p><strong>{sellerID}</strong> is selling on average <strong>{round(totalPercentage, 2)}%</strong> of the items on \n <strong>{pageURL}</strong> tested <strong>{pageRequests}</strong> times.</p>")
+        f.write("<br>")
+        f.write("</div>")
 
-    totalPercentage = percentage / pageRequests
-    f.write('<div style="text-align: center;">')
-    f.write("<h1>Summary</h1>")
-    f.write("<a id='bottom'></a>")
-    f.write(f"<p><strong>{sellerID}</strong> is selling on average <strong>{round(totalPercentage, 2)}%</strong> of the items on \n <strong>{pageURL}</strong> tested <strong>{pageRequests}</strong> times.</p>")
-    f.write("<br>")
-    f.write("</div>")
-
-    f.close()
+        f.close()
+        print("Results have been saved to "+directoryFinal+"\Page Request.html")
+    except:
+        # print("Error occured on printing final html page")
+        exit
 
     if multiThread == "False":
         print(f"{sellerID} is selling on average {round(totalPercentage, 2)}% of the items on \n {pageURL} tested {pageRequests} times.")
         for x in range(2):
             print()
-    print("Results have been saved to "+directoryFinal+"\Page Request.html")
         
 
     if(htmlBool == "True"):

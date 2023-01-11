@@ -13,7 +13,13 @@ pageRequests = config['General']['FetchCount']
 htmlBool = config['General']['DisplayHTML']
 displayChart = config['General']['DisplayChart']
 multiThread = config['General']['MultiThread'] 
+checkAllSellers = config['General']['SearchAllSellers']
 
+if checkAllSellers == "True":
+    sellerID = "*"
+    displayChart = "False"
+    pageRequests = 1
+    
 if multiThread == "True":
     with open('./config/pages.json') as json_file:
         data = json.load(json_file)
@@ -21,6 +27,7 @@ if multiThread == "True":
         for p in data:
             pageName = p
             pageURL = data[p]
+            # print("Checking for ads from " + sellerID + " on " + pageURL)
             t = threading.Thread(target=CheckAds, args=(sellerID, pageRequests, htmlBool, pageName, pageURL, multiThread))
             threads.append(t)
             t.start()
@@ -36,4 +43,6 @@ else:
             pageURL = data[p]
             CheckAds(sellerID, pageRequests, htmlBool, pageName, pageURL, multiThread)
 
-generateChart(displayChart)
+
+if displayChart == "True":
+    generateChart(displayChart)
